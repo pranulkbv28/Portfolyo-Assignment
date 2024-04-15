@@ -4,14 +4,14 @@ import styles from "./header.module.css";
 function Header() {
     return (
         <div className={`flex items-center justify-evenly text-xl ${styles.body}`}>
-            <a href="#hero">hero</a>
-            <a href="#about">about</a>
-            <a href="#skills">skills</a>
-            <a href="#projects">projects</a>
-            <a href="#services">services</a>
-            <a href="#timeline">timeline</a>
-            <a href="#testimonials">testimonials</a>
-            <a href="#contact">contact</a>
+            <a href="#hero">Hero</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#services">Services</a>
+            <a href="#timeline">Timeline</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#contact">Contact</a>
         </div>
     );
 }

@@ -21,7 +21,7 @@ function Home() {
 
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    // const [isSending, setIsSending] = useState(false);
+    const [isScrolling, setIsScrolling] = useState(false);
 
     useEffect(() => {
         document.cookie = `portfolio-name=portfolio1`;
@@ -55,36 +55,69 @@ function Home() {
     const filteredEducation = user?.timeline?.filter((item) => item.forEducation && item.enabled);
     const filteredExperience = user?.timeline?.filter((item) => !item.forEducation && item.enabled);
 
+    useEffect(() => {
+        let scrollTimeout = null;
+
+        const handleScroll = () => {
+            setIsScrolling(true);
+            console.log("is scrolling");
+            console.log(isScrolling);
+
+            // Clear the previous timeout
+            if (scrollTimeout !== null) {
+                clearTimeout(scrollTimeout);
+            }
+
+            // Set isScrolling to false 500ms after the last scroll event
+            scrollTimeout = setTimeout(() => {
+                setIsScrolling(false);
+            }, 500);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        // Clean up the event listener and timeout when the component is unmounted
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            if (scrollTimeout !== null) {
+                clearTimeout(scrollTimeout);
+            }
+        };
+    }, [isScrolling]);
+
     if (isLoading) {
         return <div className="w-full h-screen bg-black flex items-center justify-center text-center">Loading..</div>;
     }
     return (
-        <div className={`${styles.body}`}>
-            <div className={`fixed top-0 w-3/5 mx-auto border border-solid border-black p-2 rounded-lg ${styles.headerBody}`} id="header">
+        <div className={`bg-black text-white ${styles.body}`}>
+            <div
+                className={`fixed w-3/5 h-auto p-2 mx-auto border border-solid rounded-lg border-white ${isScrolling ? `opacity-100 top-[5%] visible` : `opacity-0 top-[-5%] invisible`} duration-200 ease-in-out ${styles.headerBody}`}
+                id="header"
+            >
                 <Header />
             </div>
-            <div id="hero">
+            <div className="h-screen" id="hero">
                 <Hero name={user.about.name} />
             </div>
-            <div id="about">
+            <div className="h-screen" id="about">
                 <About about={user.about} />
             </div>
-            <div id="skills">
+            <div className="h-screen" id="skills">
                 <Skills skills={sortedFilteredSkills} />
             </div>
-            <div id="projects">
+            <div className="h-screen" id="projects">
                 <Projects projects={sortedFilteredProject} />
             </div>
-            <div id="services">
+            <div className="h-screen" id="services">
                 <Services services={filteredServices} />
             </div>
-            <div id="timeline">
+            <div className="h-screen" id="timeline">
                 <Timeline education={filteredEducation} experience={filteredExperience} />
             </div>
-            <div id="testimonials">
+            <div className="h-screen" id="testimonials">
                 <Testimonial testimonials={filteredTestimonials} />
             </div>
-            <div id="contact">
+            <div className="h-screen" id="contact">
                 <Contact socialHandles={filteredSocialHandles} />
             </div>
         </div>

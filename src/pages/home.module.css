@@ -5,4 +5,5 @@
 .headerBody {
     right: 50%;
     transform: translateX(50%);
+    height: auto;
 }
